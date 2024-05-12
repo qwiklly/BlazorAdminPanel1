@@ -1,0 +1,59 @@
+﻿
+@using static BlazorAdminpanel.Responses.CustomResponses
+@inject IAccount accountService
+@inject IJSRuntime js
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
+@page "/login"
+@rendermode InteractiveServer 
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-4">
+			<h2>Login</h2>
+			<EditForm Model="@Login" OnValidSubmit="LoginClicked">
+				<DataAnnotationsValidator />
+				<div class="form-group">
+					<lable class="form-group">Email Address</lable>
+					<InputText @bind-Value="Login.Email" class="form-control"></InputText>
+				</div>
+				<div class="form-group mt-3">
+					<lable class="form-label">Password</lable>
+					<InputText @bind-Value="Login.Password" class="form-control"></InputText>
+				</div>
+				<div class="form-group mt-3">
+					<button class="btn btn-primary" type="sumbit">Login</button>
+				</div>
+				<ValidationSummary />
+			</EditForm>
+		</div>
+	</div>
+</div>
+
+@code{
+	public LoginDTO Login = new();
+
+	private string userEmail = ""; // Полученный email пользователя
+
+	private bool IsAdmin()
+	{
+		return userEmail == "admin228@admin.ru";
+	}
+
+
+
+	async Task LoginClicked()
+	{
+		LoginResponse response = await accountService.LoginAsync(Login);
+		if(!response.Flag)
+		{
+			await js.InvokeVoidAsync("alert", response.Message);
+			return;
+		}
+		
+		var customAuthStateProvider = (CustomAuthenticationProvider)AuthStateProvider;
+		customAuthStateProvider.UpdateAuthenticationState(response.JWTToken);
+		NavManager.NavigateTo("/", forceLoad: true);
+
+	}
+}

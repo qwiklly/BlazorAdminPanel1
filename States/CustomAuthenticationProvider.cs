@@ -1,6 +1,5 @@
 ﻿using BlazorAdminpanel.DTOs;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.VisualBasic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -25,25 +24,28 @@ namespace BlazorAdminpanel.States
             }
             catch { return await Task.FromResult(new AuthenticationState(anonymous)); }
         }
-        //update token
-        public async void UpdateAuthenticationState(string jwtToken)
-        {
-            var claimsPrincipal = new ClaimsPrincipal();
-            if (!string.IsNullOrEmpty(jwtToken))
+		//update token
+		public async Task UpdateAuthenticationState(string? jwtToken)
+		{
+            await Task.Run(() =>
             {
-                Constants.JWTToken = jwtToken;
+                var claimsPrincipal = new ClaimsPrincipal();
+                if (!string.IsNullOrEmpty(jwtToken))
+                {
+                    Constants.JWTToken = jwtToken;
+                    var getUserClaims = DecryptToken(jwtToken);
+                    claimsPrincipal = SetClaimPrincipal(getUserClaims);
+                }
+                else
+                {
+                    Constants.JWTToken = null!;
+                }
+                NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+            });
+		}
 
-                var getUserClaims = DecryptToken(jwtToken);
-                claimsPrincipal = SetClaimPrincipal(getUserClaims);
-            }
-            else
-            {
-                Constants.JWTToken = null!;
-            }
-            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
-        }
-        //parameters to ligin
-        public static ClaimsPrincipal SetClaimPrincipal(CustomUserClaims claims)
+		//parameters to ligin
+		public static ClaimsPrincipal SetClaimPrincipal(CustomUserClaims claims)
         {
             if (claims.Email is null) return new ClaimsPrincipal();
             return new ClaimsPrincipal(new ClaimsIdentity(
@@ -56,13 +58,10 @@ namespace BlazorAdminpanel.States
         private static CustomUserClaims DecryptToken(string jwtToken)
         {
             if (string.IsNullOrEmpty(jwtToken)) return new CustomUserClaims();
-
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(jwtToken);
-
             var name = token.Claims.FirstOrDefault(_ =>_.Type == ClaimTypes.Name);
             var email = token.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Email);
-
             return new CustomUserClaims(name!.Value, email!.Value);
         }
     }

@@ -4,10 +4,13 @@
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.Web
 @using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using static BlazorAdminpanel.Responses.CustomResponses
+
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using BlazorAdminpanel
 @using BlazorAdminpanel.Components
+
 
 @using BlazorAdminpanel.Repositories
 @using BlazorAdminpanel.Services
@@ -18,5 +21,6 @@
 
 @inject IAccountService accountService
 @inject IJSRuntime js
+@inject IAccount accountService
 @inject NavigationManager NavManager
 @inject AuthenticationStateProvider AuthStateProvider

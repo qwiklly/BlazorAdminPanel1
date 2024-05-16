@@ -1,15 +1,4 @@
-﻿
-@page "/Users"
-@using Azure
-@using static BlazorAdminpanel.Responses.CustomResponses
-@inject IAccount accountService
-@inject IJSRuntime js
-@inject NavigationManager NavManager
-@inject AuthenticationStateProvider AuthStateProvider
-@inject IAccount Account
-
-
-
+﻿@page "/Users"
 @rendermode InteractiveServer
 
 <h2>Информация о пользователях</h2>
@@ -47,13 +36,13 @@ else
         <lable class="form-group">Введите Email пользователя для удаления</lable>
         <InputText @bind-Value="Delete.Email" class="form-control"></InputText>
         <br />
-        <button class="btn btn-primary delete-button" type="sumbit">Delete</button>
+        <button class="btn btn-primary delete-button">Delete</button>
     </div>
     <ValidationSummary />
 </EditForm>
 
 @code {
-    List<ApplicationUserDTO> users;
+    List<ApplicationUserDTO> users = new List<ApplicationUserDTO>();
     public DeleteDTO Delete = new();
 
     protected override async Task OnInitializedAsync()
@@ -64,7 +53,7 @@ else
 
     private async Task LoadUsers()
     {
-        users = await Account.GetUsersAsync();
+        users = await accountService.GetUsersAsync();
     }
 
     async Task DeleteClicked()

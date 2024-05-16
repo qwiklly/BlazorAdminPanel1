@@ -1,4 +1,3 @@
-using BlazorAdminpanel;
 using BlazorAdminpanel.Components;
 using BlazorAdminpanel.Data;
 using BlazorAdminpanel.Repositories;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,11 +45,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-
     };
-
-
-
 });
 builder.Services.AddScoped<IAccount, Account>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7123/") });
@@ -86,7 +80,5 @@ app.MapRazorComponents<App>()
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 
 app.Run();

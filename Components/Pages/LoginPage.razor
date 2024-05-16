@@ -1,10 +1,4 @@
-﻿
-@using static BlazorAdminpanel.Responses.CustomResponses
-@inject IAccount accountService
-@inject IJSRuntime js
-@inject NavigationManager NavManager
-@inject AuthenticationStateProvider AuthStateProvider
-@page "/login"
+﻿@page "/login"
 @rendermode InteractiveServer 
 
 <div class="container">
@@ -32,15 +26,12 @@
 
 @code{
 	public LoginDTO Login = new();
-
 	private string userEmail = ""; // Полученный email пользователя
 
 	private bool IsAdmin()
 	{
 		return userEmail == "admin228@admin.ru";
 	}
-
-
 
 	async Task LoginClicked()
 	{
@@ -49,11 +40,9 @@
 		{
 			await js.InvokeVoidAsync("alert", response.Message);
 			return;
-		}
-		
+		}	
 		var customAuthStateProvider = (CustomAuthenticationProvider)AuthStateProvider;
-		customAuthStateProvider.UpdateAuthenticationState(response.JWTToken);
+		await customAuthStateProvider.UpdateAuthenticationState(response.JWTToken);
 		NavManager.NavigateTo("/", forceLoad: true);
-
 	}
 }

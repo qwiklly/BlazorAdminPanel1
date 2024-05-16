@@ -1,5 +1,4 @@
-﻿using BlazorAdminpanel.Components.Pages;
-using BlazorAdminpanel.Data;
+﻿using BlazorAdminpanel.Data;
 using BlazorAdminpanel.DTOs;
 using BlazorAdminpanel.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,21 +8,15 @@ using System.Security.Claims;
 using System.Text;
 using static BlazorAdminpanel.Responses.CustomResponses;
 
-
-
 namespace BlazorAdminpanel.Repositories
 {
-    public class Account : IAccount
+    public class Account(AppDbContext appDbContext, IConfiguration config) : IAccount
     {
-        private readonly AppDbContext appDbContext;
-        private readonly IConfiguration config;
-        public Account(AppDbContext appDbContext, IConfiguration config)
-        {
-            this.appDbContext = appDbContext;
-            this.config = config;
-        }
-        //Login logic
-        public async Task<LoginResponse> LoginAsync(LoginDTO model)
+        private readonly AppDbContext appDbContext = appDbContext;
+        private readonly IConfiguration config = config;
+
+		//Login logic
+		public async Task<LoginResponse> LoginAsync(LoginDTO model)
         {
             var findUser = await GetUser(model.Email);
             if (findUser == null) return new LoginResponse(false, "User not found");
@@ -99,9 +92,8 @@ namespace BlazorAdminpanel.Repositories
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-            private async Task<ApplicationUser> GetUser(string email)
+            private async Task<ApplicationUser?> GetUser(string email)
                 => await appDbContext.Users.FirstOrDefaultAsync(e => e.Email == email);
             
-        
     }
 }

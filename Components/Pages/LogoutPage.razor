@@ -1,0 +1,14 @@
+﻿@page "/Components/Pages/LogoutPage"
+
+
+@code {
+	protected async override Task OnInitializedAsync()
+	{
+		var customAuthStateProvider = (CustomAuthenticationProvider)AuthStateProvider;
+		await customAuthStateProvider.UpdateAuthenticationState(null);
+		NavManager.NavigateTo("login", true);
+	}
+}
+
+		
+

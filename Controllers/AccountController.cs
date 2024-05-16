@@ -1,30 +1,17 @@
-﻿using BlazorAdminpanel.Data;
-using BlazorAdminpanel.DTOs;
-using BlazorAdminpanel.Models;
+﻿using BlazorAdminpanel.DTOs;
 using BlazorAdminpanel.Repositories;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using static BlazorAdminpanel.Responses.CustomResponses;
-
-
 
 namespace BlazorAdminpanel.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(IAccount accountrepo) : ControllerBase
     {
-        AppDbContext appDbContext;
-        private readonly IAccount accountrepo;
+        private readonly IAccount accountrepo = accountrepo;
 
-        public AccountController(IAccount accountrepo)
-        {
-            this.accountrepo = accountrepo;
-        }
-
-        [HttpPost("register")]
+		[HttpPost("register")]
         public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegisterDTO model)
         {
             var result = await accountrepo.RegisterAsync(model);

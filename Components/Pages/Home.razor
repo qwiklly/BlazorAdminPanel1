@@ -2,13 +2,52 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Приветствую Вас в приложении администратора</h1>
-
+<h1>Приветствую Вас в приложении администратора!</h1>
+<br />
 <AuthorizeView>
 	<Authorized>
-		<h3>Hy, @context.User.Identity!.Name, Welcome</h3>
+		<h3>Привет, @context.User.Identity!.Name, Добро пожаловать!</h3>
 	</Authorized>
 	<NotAuthorized>
-		<h3>You are not logged In</h3>
+		<div class="project-description">
+			<h3>Данные для авторизации в качестве Админа:</h3>
+			<ul>
+				<h5 style="color: black; text-decoration: underline;">Login: "admin@example.com"</h5>
+				<h5 style="color: black; text-decoration: underline;">Password: "Admin123"</h5>
+			</ul>
+		</div>
 	</NotAuthorized>
 </AuthorizeView>
+
+<!-- описание проекта(project description) -->
+<div class="project-description">
+	<h2>Описание проекта</h2>
+	<p>
+		Этот проект представляет собой панель администратора. Он обладает следующими функциями: добавление пользователя и его роли, удаление пользователя, авторизация. Операции осуществляются с помощью Web токенов JWT, а данные передаются по API. Кроме того, каждый пользователь имеет роль, и некоторый функционал проекта зависит от роли пользователя.
+	</p>
+</div>
+
+<!-- описание технологий(technology description) -->
+<div class="technologies-used">
+	<h2>Использованные технологии</h2>
+	<p>
+		Для разработки этого проекта были использованы следующие технологии:
+	</p>
+	<ul>
+		<li>.NET Core 8.0</li>
+		<li>Azure.Identity</li>
+		<li>BCrypt.Net-Next</li>
+		<li>Microsoft.Data.SqlClient</li>
+		<li>Microsoft.EntityFrameworkCore</li>
+		<li>Microsoft.EntityFrameworkCore.SqlServer</li>
+		<li>Swashbuckle.AspNetCore</li>
+		<li>System.IdentityModel.Tokens.Jwt</li>
+		<li>Microsoft.AspNetCore.Authentication.JwtBearer</li>
+		<li>Microsoft.AspNetCore.Components.Authorization</li>
+	</ul>
+</div>
+<div class="row justify-content-center ">
+	<div class="login-button">
+		<a class="btn btn-link text-danger text-decoration-none" style="font-size:25px;" href="login">Перейти на страницу Авторизации</a>
+	</div>
+</div>

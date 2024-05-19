@@ -1,22 +1,28 @@
 ﻿@page "/login"
-@rendermode InteractiveServer 
+@rendermode InteractiveServer
 
-<div class="container">
-	<div class="row">
-		<div class="col-sm-4">
-			<h2>Login</h2>
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<h2 class="text-center mb-4">Вход</h2>
 			<EditForm Model="@Login" OnValidSubmit="LoginClicked">
 				<DataAnnotationsValidator />
 				<div class="form-group">
-					<lable class="form-group">Email Address</lable>
-					<InputText @bind-Value="Login.Email" class="form-control"></InputText>
+					<label for="inputEmail" class="form-label">Email Address</label>
+					<InputText id="inputEmail" @bind-Value="Login.Email" class="form-control" />
 				</div>
 				<div class="form-group mt-3">
-					<lable class="form-label">Password</lable>
-					<InputText @bind-Value="Login.Password" class="form-control"></InputText>
+					<label for="inputPassword" class="form-label">Password</label>
+					<div class="input-group">
+						<InputText id="inputPassword" @bind-Value="Login.Password" class="form-control" type="@passwordFieldType" />
+						<button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility">👁️‍🗨️</button>
+					</div>
 				</div>
 				<div class="form-group mt-3">
-					<button class="btn btn-primary" type="sumbit">Login</button>
+					<button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
+						<span>@(isLoading ? "Вход..." : "Войти")</span>
+						<div class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: @(isLoading ? "inline-block" : "none")"></div>
+					</button>
 				</div>
 				<ValidationSummary />
 			</EditForm>
@@ -24,23 +30,27 @@
 	</div>
 </div>
 
-@code{
-	public LoginDTO Login = new();
-	private string userEmail = ""; // Полученный email пользователя
 
-	private bool IsAdmin()
+@code {
+	public LoginDTO Login { get; set; } = new LoginDTO();
+	private bool isLoading = false;
+	private string passwordFieldType = "password";
+
+	private void TogglePasswordVisibility()
 	{
-		return userEmail == "admin228@admin.ru";
+		passwordFieldType = passwordFieldType == "password" ? "text" : "password";
 	}
 
-	async Task LoginClicked()
+	private async Task LoginClicked()
 	{
+		isLoading = true;
 		LoginResponse response = await accountService.LoginAsync(Login);
-		if(!response.Flag)
+		isLoading = false;
+		if (!response.Flag)
 		{
 			await js.InvokeVoidAsync("alert", response.Message);
 			return;
-		}	
+		}
 		var customAuthStateProvider = (CustomAuthenticationProvider)AuthStateProvider;
 		await customAuthStateProvider.UpdateAuthenticationState(response.JWTToken);
 		NavManager.NavigateTo("/", forceLoad: true);

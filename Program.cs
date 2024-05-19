@@ -63,6 +63,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.UseHttpsRedirection();
+app.UseStaticFiles(); // Убедитесь, что эта строка присутствует
+
+app.UseRouting();
+
 
 app.UseHttpsRedirection();
 
@@ -80,5 +85,21 @@ app.MapRazorComponents<App>()
 app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Инициализация базы данных
+using (var scope = app.Services.CreateScope())
+{
+	var services = scope.ServiceProvider;
+	try
+	{
+		var context = services.GetRequiredService<AppDbContext>();
+		await Account.Create_Admin(context);
+	}
+	catch (Exception ex)
+	{
+		var logger = services.GetRequiredService<ILogger<Program>>();
+		logger.LogError(ex, "An error occurred while seeding the database.");
+	}
+}
 
 app.Run();

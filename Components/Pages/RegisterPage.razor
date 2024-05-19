@@ -1,30 +1,52 @@
 ﻿@page "/register"
-@rendermode InteractiveServer 
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Web
 
-<div class="container">
-	<div class="row">
-		<div class="col-sm-4">
-			<h2>Register</h2>
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<h2 class="text-center">Добавление новых пользователей</h2>
 			<EditForm Model="Register" OnValidSubmit="RegisterClicked">
 				<DataAnnotationsValidator />
-				<div class="form-group">
-					<lable class="form-group">Name</lable>
+				<div class="form-group mt-3">
+					<label class="form-label">Role</label>
+					<div class="input-group">
+						<InputSelect @bind-Value="Register.Role" class="form-control">
+							<option value="User">User</option>
+							<option value="Admin">Admin</option>
+						</InputSelect>
+						<span class="input-group-text">
+							<i class="bi bi-caret-down-fill"> ▾ </i>
+						</span>
+					</div>
+				</div>
+				<div class="form-group mt-3">
+					<label class="form-label">Name</label>
 					<InputText @bind-Value="Register.Name" class="form-control"></InputText>
 				</div>
 				<div class="form-group mt-3">
-					<lable class="form-group">Email Address</lable>
-					<InputText @bind-Value="Register.Email" class="form-control"></InputText>
+					<label class="form-label">Email Address</label>
+					<InputText @bind-Value="Register.Email" type="email" class="form-control"></InputText>
 				</div>
 				<div class="form-group mt-3">
-					<lable class="form-label">Password</lable>
-					<InputText @bind-Value="Register.Password" class="form-control"></InputText>
+					<label class="form-label">Password</label>
+					<div class="input-group">
+						<InputText @bind-Value="Register.Password" type="@passwordFieldType" class="form-control"></InputText>
+						<button type="button" class="btn btn-outline-secondary" @onclick="TogglePasswordVisibility">👁️‍🗨️</button>
+					</div>
 				</div>
 				<div class="form-group mt-3">
-					<lable class="form-label">Confirm Password</lable>
-					<InputText @bind-Value="Register.ConfirmPassword" class="form-control"></InputText>
+					<label class="form-label">Confirm Password</label>
+					<div class="input-group">
+						<InputText @bind-Value="Register.ConfirmPassword" type="@confirmPasswordFieldType" class="form-control"></InputText>
+						<button type="button" class="btn btn-outline-secondary" @onclick="ToggleConfirmPasswordVisibility">👁️‍🗨️</button>
+					</div>
 				</div>
 				<div class="form-group mt-3">
-					<button class="btn btn-primary" type="sumbit">Register</button>
+					<button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
+						<span>@(isLoading ? "Регистрация..." : "Register")</span>
+						<div class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: @(isLoading ? "inline-block" : "none")"></div>
+					</button>
 				</div>
 				<ValidationSummary />
 			</EditForm>
@@ -32,20 +54,35 @@
 	</div>
 </div>
 
-@code{
-	public RegisterDTO Register = new();
 
-	async Task RegisterClicked()
+@code {
+	public RegisterDTO Register { get; set; } = new RegisterDTO();
+	private bool isLoading = false;
+	private string passwordFieldType = "password";
+	private string confirmPasswordFieldType = "password";
+
+	private void TogglePasswordVisibility()
 	{
+		passwordFieldType = passwordFieldType == "password" ? "text" : "password";
+	}
+
+	private void ToggleConfirmPasswordVisibility()
+	{
+		confirmPasswordFieldType = confirmPasswordFieldType == "password" ? "text" : "password";
+	}
+
+	private async Task RegisterClicked()
+	{
+		isLoading = true;
 		RegistrationResponse response = await accountService.RegisterAsync(Register);
-		if(!response.Flag)
+		isLoading = false;
+		if (!response.Flag)
 		{
 			await js.InvokeVoidAsync("alert", response.Message);
 			return;
 		}
 
 		await js.InvokeVoidAsync("alert", response.Message);
-		Register = new();
-		return;
+		Register = new RegisterDTO();
 	}
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAdminpanel.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240502142459_First")]
+    [Migration("20240517201647_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -41,6 +41,10 @@ namespace BlazorAdminpanel.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

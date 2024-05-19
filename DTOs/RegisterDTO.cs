@@ -9,5 +9,8 @@ namespace BlazorAdminpanel.DTOs
 
         [Required, Compare(nameof(Password)), DataType(DataType.Password)]
         public string ConfirmPassword { get; set; } = string.Empty;
+
+        [Required]
+        public string Role {  get; set; } = string.Empty;
     }
 }

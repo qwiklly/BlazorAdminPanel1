@@ -7,7 +7,7 @@ namespace BlazorAdminpanel.States
 {
     public class CustomAuthenticationProvider : AuthenticationStateProvider
     {
-        //not authenticated(anonymous)
+        //not authenticated(anonymous) 
         private readonly ClaimsPrincipal anonymous = new(new ClaimsIdentity());
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
@@ -53,6 +53,7 @@ namespace BlazorAdminpanel.States
                 {
                     new(ClaimTypes.Name, claims.Name!),
                     new(ClaimTypes.Email, claims.Email!),
+                    new(ClaimTypes.Role, claims.Role!),
                 },  "JwtAuth"));
         }
         private static CustomUserClaims DecryptToken(string jwtToken)
@@ -62,7 +63,8 @@ namespace BlazorAdminpanel.States
             var token = handler.ReadJwtToken(jwtToken);
             var name = token.Claims.FirstOrDefault(_ =>_.Type == ClaimTypes.Name);
             var email = token.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Email);
-            return new CustomUserClaims(name!.Value, email!.Value);
+            var role = token.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Role);
+            return new CustomUserClaims(name!.Value, email!.Value, role!.Value);
         }
     }
 }

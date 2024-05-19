@@ -2,7 +2,7 @@
 Этот проект представляет собой панель администратора. Он обладает следующими функциями: добавление пользователя и его роли, удаление пользователя, авторизация. Операции осуществляются с помощью Web токенов JWT, а данные передаются через API. Кроме того, каждый пользователь имеет роль, и некоторый функционал проекта зависит от роли пользователя.
 
 # Используемые технологии
-** * NET Core 8.0
+* NET Core 8.0
 * Azure.Identity
 * BCrypt.Net-Next
 * Microsoft.Data.SqlClient
@@ -11,7 +11,7 @@
 * Swashbuckle.AspNetCore
 * System.IdentityModel.Tokens.Jwt
 * Microsoft.AspNetCore.Authentication.JwtBearer
-* Microsoft.AspNetCore.Components.Authorization**
+* Microsoft.AspNetCore.Components.Authorization
 
 # Основной функционал:
 * Добавление пользователя.
@@ -21,8 +21,13 @@
 
 # При запуске:
 Возможно при запуске потребуется обновить базу данных, для этого в консоле диспетчера пакетов пропишите данную команду
+
 ![image](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/7a57b1e9-3b7b-4610-9ad1-2f550c4e15f2)
 
+## Видеообзор проекта
+
+![BlazorAdmin Panel gif View](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/46634aa7-4efe-4f28-a5aa-18eadfdc9db9)
+  
 ## Изображения форм
 ### **Начальный экран**
 
@@ -44,5 +49,4 @@
 
 ![Screenshot 2024-05-19 201509](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/0e3b57c0-ad27-4800-b27c-71db1a1fb82e)
 
-## Видеообзор проекта
-<video src='https://www.youtube.com/watch?v=YnUedj2UGvY' width=700/>
+

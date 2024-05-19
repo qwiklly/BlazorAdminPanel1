@@ -23,10 +23,6 @@
 Возможно при запуске потребуется обновить базу данных, для этого в консоле диспетчера пакетов пропишите данную команду
 
 ![image](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/7a57b1e9-3b7b-4610-9ad1-2f550c4e15f2)
-
-## Видеообзор проекта
-
-![BlazorAdmin Panel gif View](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/46634aa7-4efe-4f28-a5aa-18eadfdc9db9)
   
 ## Изображения форм
 ### **Начальный экран**
@@ -49,4 +45,6 @@
 
 ![Screenshot 2024-05-19 201509](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/0e3b57c0-ad27-4800-b27c-71db1a1fb82e)
 
+## Видеообзор проекта
 
+https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/342e70c3-cc14-43d0-93a6-5f2c32a6673d

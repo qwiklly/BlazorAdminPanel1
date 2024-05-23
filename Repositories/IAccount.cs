@@ -8,6 +8,7 @@ namespace BlazorAdminpanel.Repositories
         Task<RegistrationResponse> RegisterAsync(RegisterDTO model);
         Task<LoginResponse> LoginAsync(LoginDTO model);
         Task<List<ApplicationUserDTO>> GetUsersAsync();
+        Task<Confirm_pointResponse> Confirm_pointAsync(Confirm_pointDTO model);
         Task<DeleteUserResponse> DeleteUserAsync(DeleteDTO model);       
     }
 }

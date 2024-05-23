@@ -7,6 +7,8 @@ namespace BlazorAdminpanel.Services
     {
         Task<RegistrationResponse> RegisterAsync(RegisterDTO model);
         Task<LoginResponse> LoginAsync(LoginDTO model);
-        Task<DeleteUserResponse> DeleteUserAsync(string email);
+        Task<Confirm_pointResponse> Confirm_pointAsync(Confirm_pointDTO model);
+
+		Task<DeleteUserResponse> DeleteUserAsync(string email);
     }
 }

@@ -73,6 +73,21 @@ namespace BlazorAdminpanel.Repositories
 			await appDbContext.SaveChangesAsync();
 			return new RegistrationResponse(true, "Success");
 		}
+		public async Task<Confirm_pointResponse> Confirm_pointAsync(Confirm_pointDTO model)
+		{
+			appDbContext.Coordinates.Add(
+				 new UsersCoordinates()
+				 {
+					 Email = model.Email,
+					 Coordinate_x = model.Coordinate_x,
+					 Coordinate_y = model.Coordinate_y,
+					 Comment = model.Comment
+
+				 });
+
+			await appDbContext.SaveChangesAsync();
+			return new Confirm_pointResponse(true, "Success");
+		}
 		public static async Task Create_Admin(AppDbContext context)
 		{
 			// Проверяем, есть ли администратор в базе данных

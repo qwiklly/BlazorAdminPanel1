@@ -4,6 +4,7 @@
     {
         public record RegistrationResponse(bool Flag = false, string Message = null!);
         public record LoginResponse(bool Flag = false, string Message = null!, string JWTToken = null!);
+        public record Confirm_pointResponse(bool Flag = false, string Message = null!);
         public record DeleteUserResponse(bool Flag = false, string Message = null!);
     }
 }

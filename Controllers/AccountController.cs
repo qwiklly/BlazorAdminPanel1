@@ -23,8 +23,14 @@ namespace BlazorAdminpanel.Controllers
             var result = await accountrepo.LoginAsync(model);
             return Ok(result);
         }
-        // Service method
-        [HttpDelete("delete")]
+		[HttpPost("Confirm_point")]
+		public async Task<ActionResult<Confirm_pointResponse>> Confirm_point(Confirm_pointDTO model)
+		{
+			var result = await accountrepo.Confirm_pointAsync(model);
+			return Ok(result);
+		}
+		// Service method
+		[HttpDelete("delete")]
         public async Task<ActionResult<DeleteUserResponse>> DeleteUser(DeleteDTO model)
         {   
             var result = await accountrepo.DeleteUserAsync(model);

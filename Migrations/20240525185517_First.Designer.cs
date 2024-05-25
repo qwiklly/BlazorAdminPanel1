@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAdminpanel.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240523142051_First")]
+    [Migration("20240525185517_First")]
     partial class First
     {
         /// <inheritdoc />
@@ -75,6 +75,9 @@ namespace BlazorAdminpanel.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

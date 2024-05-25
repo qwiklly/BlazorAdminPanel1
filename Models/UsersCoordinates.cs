@@ -9,6 +9,9 @@ namespace BlazorAdminpanel.Models
 		public double? Coordinate_x { get; set; }
 
 		public double? Coordinate_y { get; set; }
+
 		public string Comment { get; set; } = string.Empty;
+
+		public DateTime Timestamp { get; set; }
 	}
 }

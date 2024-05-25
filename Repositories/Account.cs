@@ -12,7 +12,6 @@ namespace BlazorAdminpanel.Repositories
 {
 	public class Account(AppDbContext appDbContext, IConfiguration config) : IAccount
 	{
-
 		//Login logic
 		public async Task<LoginResponse> LoginAsync(LoginDTO model)
 		{
@@ -39,8 +38,23 @@ namespace BlazorAdminpanel.Repositories
 
 			return users;
 		}
-		//deleting 
-		public async Task<DeleteUserResponse> DeleteUserAsync(DeleteDTO model)
+        //Getting Coordinates
+        public async Task<List<RequestTransportDTO>> GetCoordinatesAsync()
+        {
+            return await appDbContext.Coordinates
+                .Select(u => new RequestTransportDTO
+                {
+					Id = u.Id,
+                    Email = u.Email,
+                    Coordinate_x = u.Coordinate_x,
+                    Coordinate_y = u.Coordinate_y,
+                    Comment = u.Comment,
+					Timestamp = u.Timestamp
+				})
+                .ToListAsync();
+        }
+        //deleting users
+        public async Task<DeleteUserResponse> DeleteUserAsync(DeleteUserDTO model)
 		{
 			var user = await GetUser(model.Email);
 			if (user != null)
@@ -54,9 +68,22 @@ namespace BlazorAdminpanel.Repositories
 				return new DeleteUserResponse(false, "User not found");
 			}
 		}
-
-		//Cheaking did user registrate
-		public async Task<RegistrationResponse> RegisterAsync(RegisterDTO model)
+        public async Task<DeleteCoordinatesResponse> DeleteCoordinatesAsync(DeleteCoordinatesDTO model)
+        {
+            var coordinates = await GetCoordinates(model.Id);
+            if (coordinates != null)
+            {
+                appDbContext.Coordinates.Remove(coordinates);
+                await appDbContext.SaveChangesAsync(); 
+                return new DeleteCoordinatesResponse(true, "Coordinates deleted successfully");
+            }
+            else
+            {
+                return new DeleteCoordinatesResponse(false, "Coordinates not found");
+            }
+        }
+        //Cheaking did user registrate
+        public async Task<RegistrationResponse> RegisterAsync(RegisterDTO model)
 		{
 			var findUser = await GetUser(model.Email);
 			if (findUser != null) return new RegistrationResponse(false, "User already exist");
@@ -73,7 +100,8 @@ namespace BlazorAdminpanel.Repositories
 			await appDbContext.SaveChangesAsync();
 			return new RegistrationResponse(true, "Success");
 		}
-		public async Task<Confirm_pointResponse> Confirm_pointAsync(Confirm_pointDTO model)
+		//Adding coordinates
+		public async Task<RequestTransportResponse> RequestTransportAsync(RequestTransportDTO model)
 		{
 			appDbContext.Coordinates.Add(
 				 new UsersCoordinates()
@@ -81,12 +109,12 @@ namespace BlazorAdminpanel.Repositories
 					 Email = model.Email,
 					 Coordinate_x = model.Coordinate_x,
 					 Coordinate_y = model.Coordinate_y,
-					 Comment = model.Comment
-
+					 Comment = model.Comment,
+					 Timestamp = DateTime.UtcNow
 				 });
 
 			await appDbContext.SaveChangesAsync();
-			return new Confirm_pointResponse(true, "Success");
+			return new RequestTransportResponse(true, "Success");
 		}
 		public static async Task Create_Admin(AppDbContext context)
 		{
@@ -106,7 +134,6 @@ namespace BlazorAdminpanel.Repositories
 				await context.SaveChangesAsync();
 			}
 		}
-
 		private string GenerateToken(ApplicationUser user)
 		{
 			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
@@ -129,5 +156,7 @@ namespace BlazorAdminpanel.Repositories
 		private async Task<ApplicationUser?> GetUser(string email)
 			=> await appDbContext.Users.FirstOrDefaultAsync(e => e.Email == email);
 
-	}
+        private async Task<UsersCoordinates?> GetCoordinates(int Id)
+            => await appDbContext.Coordinates.FirstOrDefaultAsync(e => e.Id == Id);
+    }
 }

@@ -2,9 +2,10 @@
 
 namespace BlazorAdminpanel.DTOs
 {
-	public class Confirm_pointDTO
-	{
-		[Required, DataType(DataType.EmailAddress), EmailAddress]
+	public class RequestTransportDTO
+    {
+
+        [Required, DataType(DataType.EmailAddress), EmailAddress]
 		public string Email { get; set; } = string.Empty;
 
 		[Required]
@@ -15,5 +16,9 @@ namespace BlazorAdminpanel.DTOs
 
 		[Required]
 		public string Comment { get; set; } = string.Empty;
-	}
+
+		public int? Id { get; set; }
+
+		public DateTime Timestamp { get; set; }
+    }
 }

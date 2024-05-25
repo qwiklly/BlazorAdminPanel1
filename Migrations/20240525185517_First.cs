@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -19,7 +20,8 @@ namespace BlazorAdminpanel.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Coordinate_x = table.Column<double>(type: "float", nullable: true),
                     Coordinate_y = table.Column<double>(type: "float", nullable: true),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

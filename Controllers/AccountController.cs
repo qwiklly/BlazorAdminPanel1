@@ -11,31 +11,37 @@ namespace BlazorAdminpanel.Controllers
     {
         private readonly IAccount accountrepo = accountrepo;
 
-		[HttpPost("register")]
+		[HttpPost("Register")]
         public async Task<ActionResult<RegistrationResponse>> RegisterAsync(RegisterDTO model)
         {
             var result = await accountrepo.RegisterAsync(model);
             return Ok(result);
         }
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<LoginResponse>> LoginAsync(LoginDTO model)
         {
             var result = await accountrepo.LoginAsync(model);
             return Ok(result);
         }
-		[HttpPost("Confirm_point")]
-		public async Task<ActionResult<Confirm_pointResponse>> Confirm_point(Confirm_pointDTO model)
+		[HttpPost("RequestTransport")]
+		public async Task<ActionResult<RequestTransportResponse>> RequestTransportAsync(RequestTransportDTO model)
 		{
-			var result = await accountrepo.Confirm_pointAsync(model);
+			var result = await accountrepo.RequestTransportAsync(model);
 			return Ok(result);
 		}
 		// Service method
-		[HttpDelete("delete")]
-        public async Task<ActionResult<DeleteUserResponse>> DeleteUser(DeleteDTO model)
+		[HttpDelete("DeleteUser")]
+        public async Task<ActionResult<DeleteUserResponse>> DeleteUser(DeleteUserDTO model)
         {   
             var result = await accountrepo.DeleteUserAsync(model);
             return Ok(result);
         }
 
+        [HttpDelete("DeleteCoordinates")]
+        public async Task<ActionResult<DeleteCoordinatesResponse>> DeleteCoordinates(DeleteCoordinatesDTO model)
+        {
+            var result = await accountrepo.DeleteCoordinatesAsync(model);
+            return Ok(result);
+        }
     }
 }

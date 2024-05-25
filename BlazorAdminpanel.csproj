@@ -25,6 +25,7 @@
 		
 		<!--Client-->
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.1" />
+		<PackageReference Include="TimeZoneConverter" Version="6.1.0" />
 		
 	</ItemGroup>
 </Project>

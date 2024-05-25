@@ -1,0 +1,86 @@
+﻿@page "/RequestTransport"
+@rendermode InteractiveServer
+
+<h2>Информация о местах проведения работ</h2>
+<EditForm Model="DeleteCoordinates" OnValidSubmit="DeleteClicked">
+    <DataAnnotationsValidator />
+    @if (coordinates != null && coordinates.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Time Added</th>
+                    <th>Email</th>
+                    <th>Coordinate_x</th>
+                    <th>Coordinate_y</th>
+                    <th>Comment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var coordinate in coordinates)
+                {
+                    var mskTime = TimeZoneInfo.ConvertTimeFromUtc(coordinate.Timestamp, TZConvert.GetTimeZoneInfo("Russian Standard Time"));
+                    <tr>
+                        <td>@coordinate.Id</td>
+                        <td>@mskTime.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)</td>
+                        <td>@coordinate.Email</td>
+                        <td>@coordinate.Coordinate_x</td>
+                        <td>@coordinate.Coordinate_y</td>
+                        <td>@coordinate.Comment</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No coordinates found.</p>
+    }
+    <div>
+        <label class="form-group">Удалить координаты по Id</label>
+        <InputNumber @bind-Value="DeleteCoordinates.Id" class="form-control" />
+        <br />
+        <button type="submit" class="btn btn-primary delete-button">Delete</button>
+    </div>
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    private List<RequestTransportDTO> coordinates = new();
+    public DeleteCoordinatesDTO DeleteCoordinates = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCoordinates();
+    }
+
+    private async Task LoadCoordinates()
+    {
+        coordinates = await accountService.GetCoordinatesAsync();
+    }
+
+    async Task DeleteClicked()
+    {
+        var userId = DeleteCoordinates.Id;
+        var confirmed = await ConfirmDelete();
+        if (confirmed)
+        {
+            var response = await accountService.DeleteCoordinatesAsync(DeleteCoordinates);
+            if (response.Flag)
+            {
+                await js.InvokeVoidAsync("alert", "Coordinates deleted successfully.");
+                await LoadCoordinates();
+            }
+            else
+            {
+                await js.InvokeVoidAsync("alert", response.Message);
+            }
+        }
+    }
+    async Task<bool> ConfirmDelete()
+    {
+        return await js.InvokeAsync<bool>("confirm", "Are you sure you want to delete these coordinates?");
+    }
+}
+

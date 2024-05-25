@@ -19,10 +19,17 @@ namespace BlazorAdminpanel.Services
             var result = await response.Content.ReadFromJsonAsync<DeleteUserResponse>();
             return result!;
         }
-		public async Task<Confirm_pointResponse> Confirm_pointAsync(Confirm_pointDTO model)
+        public async Task<DeleteCoordinatesResponse> DeleteCoordinatesAsync(int id)
+        {
+            var response = await httpClient.DeleteAsync($"api/deleteCoordinates/{id}");
+            var result = await response.Content.ReadFromJsonAsync<DeleteCoordinatesResponse>();
+            return result!;
+        }
+
+        public async Task<RequestTransportResponse> Confirm_pointAsync(RequestTransportDTO model)
 		{
-			var response = await httpClient.PostAsJsonAsync("api/account/confirm_point", model);
-			var result = await response.Content.ReadFromJsonAsync<Confirm_pointResponse>();
+			var response = await httpClient.PostAsJsonAsync("api/requestTransport", model);
+			var result = await response.Content.ReadFromJsonAsync<RequestTransportResponse>();
 			return result!;
 		}
 		public async Task<RegistrationResponse> RegisterAsync(RegisterDTO model)

@@ -41,7 +41,7 @@
 
 ![Screenshot 2024-05-19 201436](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/55095b65-803c-4544-8e2c-ad8a3006fe88)
 
-### **Список пзапросов транспортных средств с их координатами и удаление**
+### **Список запросов транспортных средств с их координатами и удаление**
 
 ![image](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/8565abf1-5f7f-47f8-8ccd-892a8527e501)
 

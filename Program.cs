@@ -20,7 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(x =>
 {
     x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" });
-
+    x.EnableAnnotations();
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>

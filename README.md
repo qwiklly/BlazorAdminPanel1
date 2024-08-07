@@ -47,7 +47,7 @@
 
 ### **Окно Swagger**
 
-![Screenshot 2024-05-19 201509](https://github.com/qwiklly/BlazorAdminPanel1/assets/157243767/0e3b57c0-ad27-4800-b27c-71db1a1fb82e)
+![image](https://github.com/user-attachments/assets/8b08b2c0-a521-48bd-8810-908c5d70d1da)
 
 ## Видеообзор проекта
 

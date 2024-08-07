@@ -24,9 +24,9 @@ namespace BlazorAdminpanel.States
             }
             catch { return await Task.FromResult(new AuthenticationState(anonymous)); }
         }
-		//update token
-		public async Task UpdateAuthenticationState(string? jwtToken)
-		{
+        //Update token
+        public async Task UpdateAuthenticationState(string? jwtToken)
+        {
             await Task.Run(() =>
             {
                 var claimsPrincipal = new ClaimsPrincipal();
@@ -42,10 +42,10 @@ namespace BlazorAdminpanel.States
                 }
                 NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
             });
-		}
+        }
 
-		//parameters to ligin
-		public static ClaimsPrincipal SetClaimPrincipal(CustomUserClaims claims)
+        //parameters to login
+        public static ClaimsPrincipal SetClaimPrincipal(CustomUserClaims claims)
         {
             if (claims.Email is null) return new ClaimsPrincipal();
             return new ClaimsPrincipal(new ClaimsIdentity(
@@ -54,14 +54,14 @@ namespace BlazorAdminpanel.States
                     new(ClaimTypes.Name, claims.Name!),
                     new(ClaimTypes.Email, claims.Email!),
                     new(ClaimTypes.Role, claims.Role!),
-                },  "JwtAuth"));
+                }, "JwtAuth"));
         }
         private static CustomUserClaims DecryptToken(string jwtToken)
         {
             if (string.IsNullOrEmpty(jwtToken)) return new CustomUserClaims();
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(jwtToken);
-            var name = token.Claims.FirstOrDefault(_ =>_.Type == ClaimTypes.Name);
+            var name = token.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Name);
             var email = token.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Email);
             var role = token.Claims.FirstOrDefault(_ => _.Type == ClaimTypes.Role);
             return new CustomUserClaims(name!.Value, email!.Value, role!.Value);
